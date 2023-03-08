@@ -1,15 +1,36 @@
-<link rel ="stylesheet" href = "style.css">
 <!DOCTYPE html>
 <html>
     <head>
         <title>Song List</title>
-        <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <style type="text/css">
+            h1 {
+                color: blue;
+                text-align: center;
+                font-family: Monaco;
+            }
+    
+            p {
+                color: black;
+                font-family: Monaco;
+                text-align: center;
+            }
+            body{
+                background-color:lightblue;
+            }
+        </style>
     </head>
     <body>
+        <h1> Song List</h1>
+        <div id = "dataForm">
+        </div>
+        <div id = "showSongs">
+        </div>
+        <div id="container">
+        </div>
         <script language="javascript">
             $.get( "https://raw.githubusercontent.com/ellemadeline/song-list/main/data.json", 
             function( data ) {
-                document.write("<h1> Song List</h1>")
                     str = JSON.parse(data);
                     // document.write(str +"<br/>");
                 strHTML= "<p>";
@@ -19,8 +40,51 @@
                         + "</p>";
                     }) 
             strHTML += "<p>";
-            document.write (strHTML);  
+            document.getElementById("container").innerHTML = strHTML;  
+            formHTML = "<h2> Flitering Tool </h2><form> <select name= genre size='1'>"
+            formHTML += "<option> See All </option>"
+            chosenGenres = [];
+            str.forEach(function(song) { 
+                    for(i = 0; i < (song.genres).length; i++){
+                        if(chosenGenres.includes(song.genres[i]) == false){
+                            chosenGenres.push(song.genres[i]);
+                            formHTML += "<option>" + song.genres[i]+ "</option>";
+                    }
+                  }
             })
+            formHTML += "</select> <button type='button' id = 'btn1'>Filter!</button> </form>"
+            console.log(formHTML)
+            document.getElementById("dataForm").innerHTML = formHTML;  
+
+            quantites = document.getElementsByTagName("select");
+          
+            document.getElementById('btn1').addEventListener("click",function(){
+                divHTML = "<p>"
+                genreChosen = document.getElementsByName("genre")[0].value
+                str.forEach(function(song) { 
+                    if(genreChosen != "See All"){
+                        for(i = 0; i < (song.genres).length; i++){
+                        if(song.genres[i] == genreChosen){
+                           divHTML += "<p>" + song.songtitle + "" + "</br>" + "Artist: " + song.artists + "</br>" + "Genre: " + song.genres + "</br>" + "Released: " + song.year
+                        + "</p>";
+                        }
+                    }
+                    }
+                    else{
+                        divHTML += "<p>" 
+                        + song.songtitle + "" + "</br>" + "Artist: " + song.artists + "</br>" + "Genre: " + song.genres + "</br>" + "Released: " + song.year
+                        + "</p>";
+                    }
+            })
+            divHTML += "<p>";
+            document.getElementById("showSongs").innerHTML = divHTML; 
+            document.getElementById("container").style.display = 'none';
+            })
+            })
+
+
+
+        
         </script>
 </body>
 </html>
