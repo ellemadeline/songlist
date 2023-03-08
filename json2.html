@@ -1,0 +1,26 @@
+<link rel ="stylesheet" href = "style.css">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Song List</title>
+        <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <script language="javascript">
+            $.get( "https://raw.githubusercontent.com/ellemadeline/song-list/main/data.json", 
+            function( data ) {
+                document.write("<h1> Song List</h1>")
+                    str = JSON.parse(data);
+                    // document.write(str +"<br/>");
+                strHTML= "<p>";
+                str.forEach(function(song) { 
+                strHTML += "<p>" 
+                        + song.songtitle + "" + "</br>" + "Artist: " + song.artists + "</br>" + "Genre: " + song.genres + "</br>" + "Released: " + song.year
+                        + "</p>";
+                    }) 
+            strHTML += "<p>";
+            document.write (strHTML);  
+            })
+        </script>
+</body>
+</html>
